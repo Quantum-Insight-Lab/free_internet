@@ -646,7 +646,7 @@
     display: grid;
     grid-template-columns: minmax(180px, 240px) 1fr;
     gap: 28px;
-    align-items: start;
+    align-items: center;
   }
 
   .report-cover {
@@ -679,14 +679,6 @@
     color: #2a2a2a;
     line-height: 1.55;
     margin-bottom: 20px;
-  }
-
-  .report-meta {
-    text-align: center;
-  }
-
-  .report-meta .btn-row {
-    justify-content: center;
   }
 
   .btn-row {
@@ -834,7 +826,10 @@
     .decline-labels { flex-direction: column; gap: 4px; }
     .methodology { grid-template-columns: 1fr; }
     .footer-line { flex-direction: column; gap: 8px; }
-    .report-grid { grid-template-columns: 1fr; }
+    .report-grid {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
     details.shelf-block > summary { padding: 16px 20px; }
     .shelf-body { padding-left: 20px; padding-right: 20px; }
   }
