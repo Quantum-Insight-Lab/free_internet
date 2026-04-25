@@ -781,6 +781,11 @@
     color: var(--paper);
   }
 
+  /* Вторичные кнопки: у базового .btn белый фон + светлый текст = невидимая подпись */
+  .shelf-cta .btn:not(.btn--fill) {
+    background: transparent;
+  }
+
   .shelf-cta .btn:hover {
     background: var(--paper);
     color: var(--ink);
