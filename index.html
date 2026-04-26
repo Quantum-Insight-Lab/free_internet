@@ -1258,6 +1258,8 @@
             <button type="button" class="btn" data-share="telegram" aria-label="Поделиться в Telegram">Telegram</button>
             <button type="button" class="btn" data-share="vk" aria-label="Поделиться ВКонтакте">ВКонтакте</button>
             <button type="button" class="btn" data-share="x" aria-label="Поделиться в X">X</button>
+            <button type="button" class="btn" data-share="instagram" aria-label="Поделиться в Instagram">Instagram</button>
+            <button type="button" class="btn" data-share="linkedin" aria-label="Поделиться в LinkedIn">LinkedIn</button>
             <button type="button" class="btn" id="copy-dashboard-link" aria-label="Копировать ссылку">Скопировать ссылку</button>
           </div>
           <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
@@ -1308,6 +1310,12 @@
     }
   }
   var text = 'Цена блокировок — публичный дашборд (открытые данные)';
+  var hint = document.getElementById('copy-hint');
+
+  function showHint(msg) {
+    if (hint) hint.textContent = msg;
+  }
+
   document.querySelectorAll('[data-share]').forEach(function (el) {
     el.addEventListener('click', function () {
       var kind = el.getAttribute('data-share');
@@ -1318,22 +1326,44 @@
         window.open('https://vk.com/share.php?url=' + encodeURIComponent(p) + '&title=' + encodeURIComponent(text), '_blank', 'noopener,noreferrer');
       } else if (kind === 'x') {
         window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(p) + '&text=' + encodeURIComponent(text), '_blank', 'noopener,noreferrer');
+      } else if (kind === 'linkedin') {
+        window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(p), '_blank', 'noopener,noreferrer');
+      } else if (kind === 'instagram') {
+        if (navigator.share) {
+          navigator.share({ title: text, text: text + '\n' + p, url: p }).catch(function () {
+            copyLinkForInstagram(p);
+          });
+        } else {
+          copyLinkForInstagram(p);
+        }
       }
     });
   });
+
+  function copyLinkForInstagram(p) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(p).then(function () {
+        showHint('Ссылка скопирована — вставьте в пост или сторис в приложении Instagram');
+      }).catch(function () {
+        showHint('Скопируйте вручную: ' + p);
+      });
+    } else {
+      showHint(p);
+    }
+  }
+
   var copyBtn = document.getElementById('copy-dashboard-link');
-  var hint = document.getElementById('copy-hint');
-  if (copyBtn && hint) {
+  if (copyBtn) {
     copyBtn.addEventListener('click', function () {
       var p = pageUrl();
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(p).then(function () {
-          hint.textContent = 'Ссылка с UTM скопирована в буфер';
+          showHint('Ссылка с UTM скопирована в буфер');
         }).catch(function () {
-          hint.textContent = 'Скопируйте вручную: ' + p;
+          showHint('Скопируйте вручную: ' + p);
         });
       } else {
-        hint.textContent = p;
+        showHint(p);
       }
     });
   }
