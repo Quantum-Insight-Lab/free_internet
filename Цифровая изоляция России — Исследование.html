@@ -143,16 +143,49 @@
   ol.sources li { margin-bottom: 5px; }
   ol.sources strong { color: var(--dark-blue); }
 
-  /* ── print ── */
+  /* ── print (колонтитулы с датой/URL — это настройка браузера, не страницы) ── */
+  .print-browser-hint {
+    font-family: 'PT Sans', Arial, sans-serif;
+    font-size: 9pt;
+    color: #4a4a4a;
+    background: #fff8e6;
+    border: 1px solid #e0cf8c;
+    padding: 10px 14px;
+    margin: 0 0 20px;
+    border-radius: 2px;
+    line-height: 1.45;
+  }
+  .print-browser-hint strong { color: #3d3510; }
+
+  @page {
+    size: A4;
+    margin: 14mm 12mm 16mm 12mm;
+  }
+
   @media print {
-    body { background: #fff; }
-    .page { margin: 0; box-shadow: none; width: 100%; padding: 15mm 18mm; }
+    .print-browser-hint { display: none !important; }
+    html, body {
+      background: #fff !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .page {
+      margin: 0 !important;
+      box-shadow: none !important;
+      width: 100% !important;
+      max-width: none !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+    }
     h2 { page-break-after: avoid; }
+    .lead-box { page-break-inside: avoid; }
   }
 </style>
 </head>
 <body>
 <div class="page">
+
+  <p class="print-browser-hint no-indent"><strong>Печать в PDF:</strong> в окне «Печать» (Chrome, Edge, Яндекс.Браузер) отключите пункт <strong>«Колонтитулы»</strong> / <em>Headers and footers</em> — иначе сверху и снизу появятся дата, заголовок вкладки, адрес страницы и «1/8». В Firefox: «Параметры страницы» → снимите колонтитулы.</p>
 
   <div class="doc-header">Цифровая изоляция России · Аналитическое исследование · апрель 2026</div>
 
